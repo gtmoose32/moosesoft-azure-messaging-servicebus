@@ -11,6 +11,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C92BDFB0-712
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AD70FA00-8CC3-45F3-B21A-274951FBA756}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{82B5E6BF-3FB4-4950-956C-9CCE3E95476B}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{DBC48C38-4D32-4945-9DCD-EDAE7CCB6019}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctionSample", "samples\AzureFunctionSample\AzureFunctionSample.csproj", "{EF604808-86CF-4BC5-8845-D85D5F1615A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +35,10 @@ Global
 		{A12733DE-D7E2-4ED5-A7EA-1580E202C55E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A12733DE-D7E2-4ED5-A7EA-1580E202C55E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A12733DE-D7E2-4ED5-A7EA-1580E202C55E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF604808-86CF-4BC5-8845-D85D5F1615A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF604808-86CF-4BC5-8845-D85D5F1615A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF604808-86CF-4BC5-8845-D85D5F1615A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF604808-86CF-4BC5-8845-D85D5F1615A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +46,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0F827E45-F1B2-47BF-8F55-004EE87AEB49} = {C92BDFB0-712D-41D7-AFAE-0A0DAD157BB3}
 		{A12733DE-D7E2-4ED5-A7EA-1580E202C55E} = {C92BDFB0-712D-41D7-AFAE-0A0DAD157BB3}
+		{EF604808-86CF-4BC5-8845-D85D5F1615A5} = {DBC48C38-4D32-4945-9DCD-EDAE7CCB6019}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5BB8E90-E88A-4E14-B21F-D297DE533C94}
