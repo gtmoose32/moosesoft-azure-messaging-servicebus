@@ -12,6 +12,7 @@ public interface IFailurePolicyHolder
     /// Sets the instance of <see cref="IFailurePolicy"/> to <see cref="CloneMessageFailurePolicy"/> for the message pump builder to use.
     /// </summary>
     /// <param name="canHandle">Function providing <see cref="bool"/> for which exceptions should be handled by the <see cref="IFailurePolicy"/>.</param>
+    /// <param name="maxMessageDeliveryCount">Maximum times the message can delivered before failure policy will move it to the DLQ.</param>
     /// <returns><see cref="IDelayCalculatorStrategyHolder"/></returns>
     IDelayCalculatorStrategyHolder WithCloneMessageFailurePolicy(Func<Exception, bool> canHandle = null, int maxMessageDeliveryCount = 10);
 

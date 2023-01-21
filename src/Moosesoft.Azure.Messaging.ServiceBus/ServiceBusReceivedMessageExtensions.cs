@@ -5,7 +5,7 @@ namespace Moosesoft.Azure.Messaging.ServiceBus;
 internal static class ServiceBusReceivedMessageExtensions
 {
     public static int GetRetryCount(this ServiceBusReceivedMessage message) =>
-        message.ApplicationProperties.TryGetValue(Constants.RetryCountKey, out var count) && count != null
+        message.ApplicationProperties.TryGetValue(Constants.RetryCountPropertyName, out var count) && count != null
             ? (int)count
             : 0;
 

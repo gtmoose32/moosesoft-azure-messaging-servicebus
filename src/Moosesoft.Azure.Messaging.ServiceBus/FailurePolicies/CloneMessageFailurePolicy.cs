@@ -32,7 +32,7 @@ public class CloneMessageFailurePolicy : FailurePolicyBase
         if (deliveryCount >= MaxDeliveryCount)
         {
             await messageContext
-                .DeadLetterMessageAsync(messageContext.Message, $"Max delivery count of {MaxDeliveryCount} has been reached.", cancellationToken: cancellationToken)
+                .DeadLetterMessageAsync($"Max delivery count of {MaxDeliveryCount} has been reached.", cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
 
             return;
@@ -44,7 +44,7 @@ public class CloneMessageFailurePolicy : FailurePolicyBase
             ScheduledEnqueueTime = DateTime.UtcNow + DelayCalculatorStrategy.Calculate(deliveryCount),
             ApplicationProperties =
             {
-                [Constants.RetryCountKey] = deliveryCount
+                [Constants.RetryCountPropertyName] = deliveryCount
             }
         };
 
@@ -53,9 +53,7 @@ public class CloneMessageFailurePolicy : FailurePolicyBase
         {
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             await sender.SendMessageAsync(clone, cancellationToken).ConfigureAwait(false);
-            await messageContext
-                .CompleteMessageAsync(messageContext.Message, cancellationToken)
-                .ConfigureAwait(false);
+            await messageContext.CompleteMessageAsync(cancellationToken).ConfigureAwait(false);
 
             scope.Complete();
         }

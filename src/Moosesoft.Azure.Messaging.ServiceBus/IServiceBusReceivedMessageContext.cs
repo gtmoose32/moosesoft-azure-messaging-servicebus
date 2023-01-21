@@ -25,27 +25,24 @@ public interface IServiceBusReceivedMessageContext
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="message"></param>
     /// <param name="reason"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task DeadLetterMessageAsync(ServiceBusReceivedMessage message, string reason, CancellationToken cancellationToken);
+    Task DeadLetterMessageAsync(string reason, CancellationToken cancellationToken);
 
 
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="message"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task CompleteMessageAsync(ServiceBusReceivedMessage message, CancellationToken cancellationToken);
+    Task CompleteMessageAsync(CancellationToken cancellationToken);
 
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="message"></param>
     /// <param name="propertiesToModify"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task AbandonMessageAsync(ServiceBusReceivedMessage message, IDictionary<string, object> propertiesToModify = null, CancellationToken cancellationToken = default);
+    Task AbandonMessageAsync(IDictionary<string, object> propertiesToModify = null, CancellationToken cancellationToken = default);
 }

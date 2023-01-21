@@ -9,7 +9,6 @@ namespace Moosesoft.Azure.Messaging.ServiceBus;
 internal class ServiceBusReceivedMessageContextProcessor : IMessageContextProcessor
 {
     private readonly IFailurePolicy _failurePolicy;
-    private readonly ServiceBusEntityDescription _description;
     private readonly IMessageProcessor _messageProcessor;
     private readonly Func<Exception, bool> _shouldComplete;
 
@@ -23,7 +22,6 @@ internal class ServiceBusReceivedMessageContextProcessor : IMessageContextProces
         Func<Exception, bool> shouldComplete = null,
         string name = "default")
     {
-        _description = description ?? throw new ArgumentNullException(nameof(description));
         _messageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));
         _failurePolicy = failurePolicy ?? new AbandonMessageFailurePolicy();
         _shouldComplete = shouldComplete;
@@ -38,11 +36,7 @@ internal class ServiceBusReceivedMessageContextProcessor : IMessageContextProces
         try
         {
             await _messageProcessor.ProcessMessageAsync(messageContext.Message, cancellationToken).ConfigureAwait(false);
-
-
-            await messageContext
-                .CompleteMessageAsync(messageContext.Message, cancellationToken)
-                .ConfigureAwait(false);
+            await messageContext.CompleteMessageAsync(cancellationToken).ConfigureAwait(false);
         }
         catch (Exception exception)
         {
@@ -60,9 +54,7 @@ internal class ServiceBusReceivedMessageContextProcessor : IMessageContextProces
     {
         if (_shouldComplete == null || !_shouldComplete(exception)) return false;
 
-        await messageContext
-            .CompleteMessageAsync(messageContext.Message, cancellationToken)
-            .ConfigureAwait(false);
+        await messageContext.CompleteMessageAsync(cancellationToken).ConfigureAwait(false);
 
         return true;
     }
@@ -71,9 +63,7 @@ internal class ServiceBusReceivedMessageContextProcessor : IMessageContextProces
     {
         if (_failurePolicy.CanHandle(exception)) return false;
 
-        await messageContext
-            .AbandonMessageAsync(messageContext.Message, cancellationToken: cancellationToken)
-            .ConfigureAwait(false);
+        await messageContext.AbandonMessageAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 
         return true;
     }

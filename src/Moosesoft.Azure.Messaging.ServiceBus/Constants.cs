@@ -2,5 +2,5 @@
 
 internal static class Constants
 {
-    public const string RetryCountKey = "retry-count";
+    public const string RetryCountPropertyName = "retry-count";
 }
