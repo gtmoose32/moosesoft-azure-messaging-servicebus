@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moosesoft.Azure.Messaging.ServiceBus", "src\Moosesoft.Azure.Messaging.ServiceBus\Moosesoft.Azure.Messaging.ServiceBus.csproj", "{0F827E45-F1B2-47BF-8F55-004EE87AEB49}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moosesoft.Azure.Webjobs.Extensions.ServiceBus", "src\Moosesoft.Azure.Webjobs.Extensions.ServiceBus\Moosesoft.Azure.Webjobs.Extensions.ServiceBus.csproj", "{A12733DE-D7E2-4ED5-A7EA-1580E202C55E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C92BDFB0-712D-41D7-AFAE-0A0DAD157BB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AD70FA00-8CC3-45F3-B21A-274951FBA756}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F827E45-F1B2-47BF-8F55-004EE87AEB49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F827E45-F1B2-47BF-8F55-004EE87AEB49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F827E45-F1B2-47BF-8F55-004EE87AEB49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F827E45-F1B2-47BF-8F55-004EE87AEB49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A12733DE-D7E2-4ED5-A7EA-1580E202C55E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A12733DE-D7E2-4ED5-A7EA-1580E202C55E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A12733DE-D7E2-4ED5-A7EA-1580E202C55E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A12733DE-D7E2-4ED5-A7EA-1580E202C55E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0F827E45-F1B2-47BF-8F55-004EE87AEB49} = {C92BDFB0-712D-41D7-AFAE-0A0DAD157BB3}
+		{A12733DE-D7E2-4ED5-A7EA-1580E202C55E} = {C92BDFB0-712D-41D7-AFAE-0A0DAD157BB3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C5BB8E90-E88A-4E14-B21F-D297DE533C94}
+	EndGlobalSection
+EndGlobal
