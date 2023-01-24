@@ -22,7 +22,7 @@ public interface IFailurePolicy
     /// <param name="messageContext">The context the Service Bus Message resides in.</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns><see cref="Task"/></returns>
-    Task HandleFailureAsync(IServiceBusReceivedMessageContext messageContext, CancellationToken cancellationToken);
+    Task HandleFailureAsync(MessageContextBase messageContext, CancellationToken cancellationToken);
 
     /// <summary>
     /// Sets the description of the Service Bus entity for which the failure policy should be applied.

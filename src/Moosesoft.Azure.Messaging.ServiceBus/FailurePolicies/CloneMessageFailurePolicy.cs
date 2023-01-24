@@ -24,11 +24,11 @@ public class CloneMessageFailurePolicy : FailurePolicyBase
     }
 
     /// <inheritdoc />
-    public override async Task HandleFailureAsync(IServiceBusReceivedMessageContext messageContext, CancellationToken cancellationToken)
+    public override async Task HandleFailureAsync(MessageContextBase messageContext, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var deliveryCount = GetDeliveryCount(messageContext.Message);
+        var deliveryCount = GetDeliveryCount(messageContext);
         if (deliveryCount >= MaxDeliveryCount)
         {
             await messageContext
@@ -38,21 +38,11 @@ public class CloneMessageFailurePolicy : FailurePolicyBase
             return;
         }
 
-        var clone = new ServiceBusMessage(messageContext.Message)
-        {
-            MessageId = Guid.NewGuid().ToString(),
-            ScheduledEnqueueTime = DateTime.UtcNow + DelayCalculatorStrategy.Calculate(deliveryCount),
-            ApplicationProperties =
-            {
-                [Constants.RetryCountPropertyName] = deliveryCount
-            }
-        };
-
         var sender = messageContext.CreateMessageSender(ServiceBusEntityDescription);
         try
         {
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-            await sender.SendMessageAsync(clone, cancellationToken).ConfigureAwait(false);
+            await sender.SendMessageAsync(CreateMessageToSend(messageContext, deliveryCount), cancellationToken).ConfigureAwait(false);
             await messageContext.CompleteMessageAsync(cancellationToken).ConfigureAwait(false);
 
             scope.Complete();
@@ -64,5 +54,14 @@ public class CloneMessageFailurePolicy : FailurePolicyBase
     }
 
     /// <inheritdoc />
-    protected override int GetDeliveryCount(ServiceBusReceivedMessage message) => base.GetDeliveryCount(message) + message.GetRetryCount();
+    protected override int GetDeliveryCount(MessageContextBase message) => base.GetDeliveryCount(message) + message.RetryCount;
+
+    private ServiceBusMessage CreateMessageToSend(MessageContextBase messageContext, int deliveryCount)
+    {
+        var clone = messageContext.ToServiceBusMessage();
+        clone.ScheduledEnqueueTime = DateTime.UtcNow + DelayCalculatorStrategy.Calculate(deliveryCount);
+        clone.ApplicationProperties[Constants.RetryCountPropertyName] = deliveryCount;
+
+        return clone;
+    }
 }

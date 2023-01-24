@@ -31,11 +31,11 @@ internal class ServiceBusReceivedMessageContextProcessor : IMessageContextProces
     }
 
     /// <inheritdoc />
-    public async Task ProcessMessageContextAsync(IServiceBusReceivedMessageContext messageContext, CancellationToken cancellationToken = default)
+    public async Task ProcessMessageContextAsync(MessageContextBase messageContext, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _messageProcessor.ProcessMessageAsync(messageContext.Message, cancellationToken).ConfigureAwait(false);
+            await _messageProcessor.ProcessMessageAsync(messageContext, cancellationToken).ConfigureAwait(false);
             await messageContext.CompleteMessageAsync(cancellationToken).ConfigureAwait(false);
         }
         catch (Exception exception)
@@ -50,7 +50,7 @@ internal class ServiceBusReceivedMessageContextProcessor : IMessageContextProces
         }
     }
 
-    private async Task<bool> TryCompleteOnExceptionAsync(IServiceBusReceivedMessageContext messageContext, Exception exception, CancellationToken cancellationToken)
+    private async Task<bool> TryCompleteOnExceptionAsync(MessageContextBase messageContext, Exception exception, CancellationToken cancellationToken)
     {
         if (_shouldComplete == null || !_shouldComplete(exception)) return false;
 
@@ -59,7 +59,7 @@ internal class ServiceBusReceivedMessageContextProcessor : IMessageContextProces
         return true;
     }
 
-    private async Task<bool> TryAbandonOnExceptionAsync(IServiceBusReceivedMessageContext messageContext, Exception exception, CancellationToken cancellationToken)
+    private async Task<bool> TryAbandonOnExceptionAsync(MessageContextBase messageContext, Exception exception, CancellationToken cancellationToken)
     {
         if (_failurePolicy.CanHandle(exception)) return false;
 

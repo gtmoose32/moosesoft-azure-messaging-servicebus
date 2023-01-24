@@ -40,7 +40,7 @@ public abstract class FailurePolicyBase : IFailurePolicy
     public bool CanHandle(Exception exception) => _canHandle(exception);
 
     /// <inheritdoc />
-    public abstract Task HandleFailureAsync(IServiceBusReceivedMessageContext messageContext, CancellationToken cancellationToken);
+    public abstract Task HandleFailureAsync(MessageContextBase messageContext, CancellationToken cancellationToken);
 
     /// <inheritdoc />
     public void SetEntityDescription(ServiceBusEntityDescription description)
@@ -51,7 +51,7 @@ public abstract class FailurePolicyBase : IFailurePolicy
     /// <summary>
     /// Gets the delivery count for the specified Service Bus <see cref="ServiceBusReceivedMessage"/>.
     /// </summary>
-    /// <param name="message">Message used to determine the delivery count.</param>
+    /// <param name="messageContext"><see cref="MessageContextBase"/> used to determine the delivery count.</param>
     /// <returns>Number of times the message has been delivered.</returns>
-    protected virtual int GetDeliveryCount(ServiceBusReceivedMessage message) => message.GetDeliveryCount();
+    protected virtual int GetDeliveryCount(MessageContextBase messageContext) => messageContext.DeliveryCount;
 }

@@ -5,10 +5,10 @@ using Moosesoft.Azure.Messaging.ServiceBus;
 namespace Moosesoft.Azure.Webjobs.Extensions.ServiceBus;
 
 /// <summary>
-/// <see cref="IServiceBusReceivedMessageContext"/> implementation compatible for use with Microsoft.Azure.WebJobs and AzureFunctions
+/// <see cref="MessageContextBase"/> implementation compatible for use with Microsoft.Azure.WebJobs and AzureFunctions
 /// which exposes <see cref="ServiceBusMessageActions"/> for handling messages.
 /// </summary>
-public class WebJobsServiceBusReceivedMessageContext : ServiceBusReceivedMessageContextBase
+public class WebJobsServiceBusReceivedMessageContext : MessageContextBase
 {
     private readonly ServiceBusMessageActions _messageActions;
 
@@ -41,7 +41,7 @@ public class WebJobsServiceBusReceivedMessageContext : ServiceBusReceivedMessage
     /// <inheritdoc />
     public override async Task AbandonMessageAsync(IDictionary<string, object>? propertiesToModify = default, CancellationToken cancellationToken = default)
     {
-        await _messageActions.AbandonMessageAsync(Message, cancellationToken: cancellationToken)
+        await _messageActions.AbandonMessageAsync(Message, propertiesToModify, cancellationToken: cancellationToken)
             .ConfigureAwait(false);
     }
 }

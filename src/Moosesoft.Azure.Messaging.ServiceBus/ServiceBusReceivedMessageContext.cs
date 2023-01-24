@@ -7,16 +7,10 @@ using System.Threading.Tasks;
 namespace Moosesoft.Azure.Messaging.ServiceBus;
 
 /// <inheritdoc />
-public class ServiceBusReceivedMessageContext : ServiceBusReceivedMessageContextBase
+public class ServiceBusReceivedMessageContext : MessageContextBase
 {
     private readonly ServiceBusReceiver _receiver;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="message"></param>
-    /// <param name="client"></param>
-    /// <param name="receiver"></param>
     public ServiceBusReceivedMessageContext(ServiceBusReceivedMessage message, ServiceBusClient client, ServiceBusReceiver receiver)
         : base(message, client)
     {

@@ -16,6 +16,6 @@ public class AbandonMessageFailurePolicy : FailurePolicyBase
     }
 
     /// <inheritdoc />
-    public override Task HandleFailureAsync(IServiceBusReceivedMessageContext messageContext, CancellationToken cancellationToken)
+    public override Task HandleFailureAsync(MessageContextBase messageContext, CancellationToken cancellationToken)
         => Task.CompletedTask;
 }
