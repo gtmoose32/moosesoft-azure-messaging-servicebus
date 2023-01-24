@@ -1,23 +1,21 @@
 ﻿using Azure.Messaging.ServiceBus;
-using Moosesoft.Azure.Messaging.ServiceBus.Builder;
 using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
 using Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Moosesoft.Azure.Messaging.ServiceBus.Abstractions.Builder;
+
+namespace Moosesoft.Azure.Messaging.ServiceBus.Builders;
 
 public class MessageContextProcessorBuilder 
     : IMessageProcessorHolder, IFailurePolicyHolder, IDelayCalculatorStrategyHolder, IMessageContextProcessorBuilder
 {
-    private readonly ServiceBusEntityDescription _serviceBusEntityDescription;
     private readonly BuilderState _state;
 
-    private MessageContextProcessorBuilder(ServiceBusEntityDescription serviceBusEntityDescription)
+    internal MessageContextProcessorBuilder(ServiceBusEntityDescription serviceBusEntityDescription)
     {
-        _serviceBusEntityDescription = serviceBusEntityDescription ?? throw new ArgumentNullException(nameof(serviceBusEntityDescription));
-        _state = new BuilderState();
+        _state = new BuilderState(serviceBusEntityDescription);
     }
 
     public static IMessageProcessorHolder Configure(ServiceBusEntityDescription serviceBusEntityDescription)
@@ -43,6 +41,7 @@ public class MessageContextProcessorBuilder
 
     public IDelayCalculatorStrategyHolder WithCloneMessageFailurePolicy(Func<Exception, bool> canHandle = null, int maxMessageDeliveryCount = 10)
     {
+        canHandle ??= DefaultCanHandle;
         _state.FailurePolicyFactory = () => new CloneMessageFailurePolicy(canHandle, _state.DelayCalculatorStrategy, maxMessageDeliveryCount);
         return this;
     }
@@ -76,34 +75,31 @@ public class MessageContextProcessorBuilder
         return WithDelayCalculatorStrategy(new TStrategy());
     }
 
-    public IMessageContextProcessorBuilder WithExponentialDelayCalculatorStrategy()
+    public IMessageContextProcessorBuilder WithExponentialDelayCalculatorStrategy(TimeSpan maxDelay = default)
     {
-        return WithDelayCalculatorStrategy(ExponentialDelayCalculatorStrategy.Default);
+        var strategy = maxDelay == TimeSpan.Zero
+            ? ExponentialDelayCalculatorStrategy.Default
+            : new ExponentialDelayCalculatorStrategy(maxDelay);
+
+        return WithDelayCalculatorStrategy(strategy);
     }
 
-    public IMessageContextProcessorBuilder WithExponentialDelayCalculatorStrategy(TimeSpan maxDelay)
+    public IMessageContextProcessorBuilder WithFixedDelayCalculatorStrategy(TimeSpan delayTime = default)
     {
-        return WithDelayCalculatorStrategy(new ExponentialDelayCalculatorStrategy(maxDelay));
+        var strategy = delayTime == TimeSpan.Zero
+            ? FixedDelayCalculatorStrategy.Default
+            : new FixedDelayCalculatorStrategy(delayTime);
+
+        return WithDelayCalculatorStrategy(strategy);
     }
 
-    public IMessageContextProcessorBuilder WithFixedDelayCalculatorStrategy()
+    public IMessageContextProcessorBuilder WithLinearDelayCalculatorStrategy(TimeSpan delayTime = default)
     {
-        return WithDelayCalculatorStrategy(FixedDelayCalculatorStrategy.Default);
-    }
+        var strategy = delayTime == TimeSpan.Zero
+            ? LinearDelayCalculatorStrategy.Default
+            : new LinearDelayCalculatorStrategy(delayTime);
 
-    public IMessageContextProcessorBuilder WithFixedDelayCalculatorStrategy(TimeSpan delayTime)
-    {
-        return WithDelayCalculatorStrategy(new FixedDelayCalculatorStrategy(delayTime));
-    }
-
-    public IMessageContextProcessorBuilder WithLinearDelayCalculatorStrategy()
-    {
-        return WithDelayCalculatorStrategy(LinearDelayCalculatorStrategy.Default);
-    }
-
-    public IMessageContextProcessorBuilder WithLinearDelayCalculatorStrategy(TimeSpan delayTime)
-    {
-        return WithDelayCalculatorStrategy(new LinearDelayCalculatorStrategy(delayTime));
+        return WithDelayCalculatorStrategy(strategy);
     }
 
     public IMessageContextProcessorBuilder WithZeroDelayCalculatorStrategy()
@@ -111,37 +107,17 @@ public class MessageContextProcessorBuilder
         return WithDelayCalculatorStrategy(new ZeroDelayCalculatorStrategy());
     }
 
-    public IMessageContextProcessor Build(Func<Exception, bool> shouldCompleteOn = null)
+    public IMessageContextProcessor Build(Func<Exception, bool> shouldCompleteOn = null, string name = "default")
     {
         return new ServiceBusReceivedMessageContextProcessor(
-            _serviceBusEntityDescription, 
+            _state.EntityDescription, 
             _state.MessageProcessor,
             _state.FailurePolicyFactory(), 
-            shouldCompleteOn);
-    }
-
-    public IMessageContextProcessor Build(string name, Func<Exception, bool> shouldCompleteOn = null)
-    {
-        return new ServiceBusReceivedMessageContextProcessor(
-            _serviceBusEntityDescription,
-            _state.MessageProcessor,
-            _state.FailurePolicyFactory(),
             shouldCompleteOn, 
             name);
     }
-}
 
-class MyClass
-{
+    internal BuilderState GetBuilderState() => _state;
 
-    void foo()
-    {
-        MessageContextProcessorBuilder
-            .Configure(new ServiceBusEntityDescription("queue"))
-            .WithMessageProcessor((message, token) => Task.CompletedTask)
-            .WithCloneMessageFailurePolicy(ex => ex is InvalidOperationException)
-            .WithFixedDelayCalculatorStrategy(TimeSpan.FromMinutes(10))
-            .Build("ProcessorName", ex => ex is NotSupportedException);
-            
-    }
+    internal static Func<Exception, bool> DefaultCanHandle => _ => true;
 }

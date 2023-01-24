@@ -1,7 +1,7 @@
 ﻿using Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
 using System;
 
-namespace Moosesoft.Azure.Messaging.ServiceBus.Abstractions.Builder;
+namespace Moosesoft.Azure.Messaging.ServiceBus.Builders;
 
 /// <summary>
 /// Provides a holding mechanism for instances of <see cref="IFailurePolicy"/> to help constructing message pumps.

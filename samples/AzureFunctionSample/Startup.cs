@@ -3,7 +3,7 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moosesoft.Azure.Messaging.ServiceBus;
-using Moosesoft.Azure.Messaging.ServiceBus.Abstractions.Builder;
+using Moosesoft.Azure.Messaging.ServiceBus.Builders;
 using System;
 using System.Diagnostics.CodeAnalysis;
 

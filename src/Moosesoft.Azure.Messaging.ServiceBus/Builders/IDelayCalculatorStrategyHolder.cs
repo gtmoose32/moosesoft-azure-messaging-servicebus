@@ -1,7 +1,7 @@
 ﻿using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
 using System;
 
-namespace Moosesoft.Azure.Messaging.ServiceBus.Abstractions.Builder;
+namespace Moosesoft.Azure.Messaging.ServiceBus.Builders;
 
 /// <summary>
 /// Provides a holding mechanism for instances of <see cref="IDelayCalculatorStrategy"/> to help constructing message pumps.
@@ -27,41 +27,23 @@ public interface IDelayCalculatorStrategyHolder
     /// <summary>
     /// Sets the instance of <see cref="IDelayCalculatorStrategy"/> to <see cref="ExponentialDelayCalculatorStrategy"/> for the message pump builder to use.
     /// </summary>
-    /// <returns>A message pump builder.</returns>
-    IMessageContextProcessorBuilder WithExponentialDelayCalculatorStrategy();
-
-    /// <summary>
-    /// Sets the instance of <see cref="IDelayCalculatorStrategy"/> to <see cref="ExponentialDelayCalculatorStrategy"/> for the message pump builder to use.
-    /// </summary>
     /// <param name="maxDelay">Maximum amount of time this strategy will return.</param>
     /// <returns>A message pump builder.</returns>
-    IMessageContextProcessorBuilder WithExponentialDelayCalculatorStrategy(TimeSpan maxDelay);
-
-    /// <summary>
-    /// Sets the instance of <see cref="IDelayCalculatorStrategy"/> to <see cref="FixedDelayCalculatorStrategy"/> for the message pump builder to use.
-    /// </summary>
-    /// <returns>A message pump builder.</returns>
-    IMessageContextProcessorBuilder WithFixedDelayCalculatorStrategy();
+    IMessageContextProcessorBuilder WithExponentialDelayCalculatorStrategy(TimeSpan maxDelay = default);
 
     /// <summary>
     /// Sets the instance of <see cref="IDelayCalculatorStrategy"/> to <see cref="FixedDelayCalculatorStrategy"/> for the message pump builder to use.
     /// </summary>
     /// <param name="delayTime">Fixed amount of time which will be returned.</param>
     /// <returns>A message pump builder.</returns>
-    IMessageContextProcessorBuilder WithFixedDelayCalculatorStrategy(TimeSpan delayTime);
-
-    /// <summary>
-    /// Sets the instance of <see cref="IDelayCalculatorStrategy"/> to <see cref="LinearDelayCalculatorStrategy"/> for the message pump builder to use.
-    /// </summary>
-    /// <returns>A message pump builder.</returns>
-    IMessageContextProcessorBuilder WithLinearDelayCalculatorStrategy();
+    IMessageContextProcessorBuilder WithFixedDelayCalculatorStrategy(TimeSpan delayTime = default);
 
     /// <summary>
     /// Sets the instance of <see cref="IDelayCalculatorStrategy"/> to <see cref="LinearDelayCalculatorStrategy"/> for the message pump builder to use.
     /// </summary>
     /// <param name="delayTime">Amount of time to use with attempt multiplier.</param>
     /// <returns>A message pump builder.</returns>
-    IMessageContextProcessorBuilder WithLinearDelayCalculatorStrategy(TimeSpan delayTime);
+    IMessageContextProcessorBuilder WithLinearDelayCalculatorStrategy(TimeSpan delayTime = default);
 
     /// <summary>
     /// Sets the instance of <see cref="IDelayCalculatorStrategy"/> to <see cref="ZeroDelayCalculatorStrategy"/> for the message pump builder to use.
