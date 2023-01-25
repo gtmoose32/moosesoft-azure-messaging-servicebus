@@ -29,7 +29,7 @@ public class SampleFunction
     {
         Console.WriteLine($"C# ServiceBus queue trigger function processed message: {message.MessageId}");
 
-        var messageContext = new WebJobsServiceBusReceivedMessageContext(message, messageActions, client);
+        var messageContext = message.CreateMessageContext(messageActions, client);
         await _messageContextProcessor.ProcessMessageContextAsync(messageContext).ConfigureAwait(false);
     }
 }

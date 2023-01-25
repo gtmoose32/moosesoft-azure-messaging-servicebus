@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
 
 /// <summary>
 /// This failure policy will abandon the message for any exceptions that occur without any back off delay.
@@ -16,6 +13,6 @@ public class AbandonMessageFailurePolicy : FailurePolicyBase
     }
 
     /// <inheritdoc />
-    public override Task HandleFailureAsync(MessageContextBase messageContext, CancellationToken cancellationToken)
+    public override Task HandleFailureAsync(MessageContext messageContext, CancellationToken cancellationToken)
         => Task.CompletedTask;
 }

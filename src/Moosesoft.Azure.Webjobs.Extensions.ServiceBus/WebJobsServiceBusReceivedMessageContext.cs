@@ -1,14 +1,10 @@
-﻿using Azure.Messaging.ServiceBus;
-using Microsoft.Azure.WebJobs.ServiceBus;
-using Moosesoft.Azure.Messaging.ServiceBus;
-
-namespace Moosesoft.Azure.Webjobs.Extensions.ServiceBus;
+﻿namespace Moosesoft.Azure.Webjobs.Extensions.ServiceBus;
 
 /// <summary>
-/// <see cref="MessageContextBase"/> implementation compatible for use with Microsoft.Azure.WebJobs and AzureFunctions
+/// <see cref="MessageContext"/> implementation compatible for use with Microsoft.Azure.WebJobs and AzureFunctions
 /// which exposes <see cref="ServiceBusMessageActions"/> for handling messages.
 /// </summary>
-public class WebJobsServiceBusReceivedMessageContext : MessageContextBase
+internal class WebJobsServiceBusReceivedMessageContext : MessageContext
 {
     private readonly ServiceBusMessageActions _messageActions;
 

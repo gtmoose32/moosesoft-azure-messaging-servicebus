@@ -1,8 +1,4 @@
-﻿using Azure.Messaging.ServiceBus;
-using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
 using System.Transactions;
 
 namespace Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
@@ -24,7 +20,7 @@ public class CloneMessageFailurePolicy : FailurePolicyBase
     }
 
     /// <inheritdoc />
-    public override async Task HandleFailureAsync(MessageContextBase messageContext, CancellationToken cancellationToken)
+    public override async Task HandleFailureAsync(MessageContext messageContext, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -54,9 +50,9 @@ public class CloneMessageFailurePolicy : FailurePolicyBase
     }
 
     /// <inheritdoc />
-    protected override int GetDeliveryCount(MessageContextBase message) => base.GetDeliveryCount(message) + message.RetryCount;
+    protected override int GetDeliveryCount(MessageContext message) => base.GetDeliveryCount(message) + message.RetryCount;
 
-    private ServiceBusMessage CreateMessageToSend(MessageContextBase messageContext, int deliveryCount)
+    private ServiceBusMessage CreateMessageToSend(MessageContext messageContext, int deliveryCount)
     {
         var clone = messageContext.ToServiceBusMessage();
         clone.ScheduledEnqueueTime = DateTime.UtcNow + DelayCalculatorStrategy.Calculate(deliveryCount);

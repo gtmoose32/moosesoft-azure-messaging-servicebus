@@ -1,8 +1,4 @@
-﻿using Azure.Messaging.ServiceBus;
-using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
 
 namespace Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
 
@@ -19,6 +15,9 @@ public abstract class FailurePolicyBase : IFailurePolicy
     /// </summary>
     protected IDelayCalculatorStrategy DelayCalculatorStrategy { get; }
 
+    /// <summary>
+    /// Failure policy entity description.
+    /// </summary>
     protected ServiceBusEntityDescription ServiceBusEntityDescription { get; private set; }
 
     private readonly Func<Exception, bool> _canHandle;
@@ -40,7 +39,7 @@ public abstract class FailurePolicyBase : IFailurePolicy
     public bool CanHandle(Exception exception) => _canHandle(exception);
 
     /// <inheritdoc />
-    public abstract Task HandleFailureAsync(MessageContextBase messageContext, CancellationToken cancellationToken);
+    public abstract Task HandleFailureAsync(MessageContext messageContext, CancellationToken cancellationToken);
 
     /// <inheritdoc />
     public void SetEntityDescription(ServiceBusEntityDescription description)
@@ -51,7 +50,7 @@ public abstract class FailurePolicyBase : IFailurePolicy
     /// <summary>
     /// Gets the delivery count for the specified Service Bus <see cref="ServiceBusReceivedMessage"/>.
     /// </summary>
-    /// <param name="messageContext"><see cref="MessageContextBase"/> used to determine the delivery count.</param>
+    /// <param name="messageContext"><see cref="MessageContext"/> used to determine the delivery count.</param>
     /// <returns>Number of times the message has been delivered.</returns>
-    protected virtual int GetDeliveryCount(MessageContextBase messageContext) => messageContext.DeliveryCount;
+    protected virtual int GetDeliveryCount(MessageContext messageContext) => messageContext.DeliveryCount;
 }

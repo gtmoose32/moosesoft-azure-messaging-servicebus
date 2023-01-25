@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus;
 
 /// <summary>
 /// Defines an object that processes a <see cref="ServiceBusReceivedMessageContext"/>
@@ -19,5 +16,5 @@ public interface IMessageContextProcessor
     /// <param name="messageContext">Message context to be processed.</param>
     /// <param name="cancellationToken">Optional cancellation token provided to check for cancellation upstream.</param>
     /// <returns><see cref="Task"/></returns>
-    Task ProcessMessageContextAsync(MessageContextBase messageContext, CancellationToken cancellationToken = default);
+    Task ProcessMessageContextAsync(MessageContext messageContext, CancellationToken cancellationToken = default);
 }
