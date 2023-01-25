@@ -1,9 +1,7 @@
-﻿using FluentAssertions;
-using Moosesoft.Azure.Messaging.ServiceBus.Builders;
+﻿using Moosesoft.Azure.Messaging.ServiceBus.Builders;
 using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
 using Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
-using Moosesoft.Azure.Messaging.ServiceBus.Tests.Infrastructure;
-using NSubstitute;
+
 // ReSharper disable PossibleNullReferenceException
 // ReSharper disable UnusedParameter.Local
 // ReSharper disable ExpressionIsAlwaysNull

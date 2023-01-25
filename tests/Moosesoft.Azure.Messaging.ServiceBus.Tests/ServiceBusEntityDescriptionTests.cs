@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿
 // ReSharper disable ObjectCreationAsStatement
 
 namespace Moosesoft.Azure.Messaging.ServiceBus.Tests;

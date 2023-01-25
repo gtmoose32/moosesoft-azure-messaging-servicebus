@@ -10,7 +10,7 @@ namespace Moosesoft.Azure.Messaging.ServiceBus.Tests.Infrastructure
             throw new NotImplementedException();
         }
 
-        public Task HandleFailureAsync(MessageContextBase messageContext, CancellationToken cancellationToken)
+        public Task HandleFailureAsync(MessageContext messageContext, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

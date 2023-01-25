@@ -1,8 +1,4 @@
-﻿using Azure.Messaging.ServiceBus;
-using FluentAssertions;
-using Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
-using NSubstitute;
-using NSubstitute.ExceptionExtensions;
+﻿using Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
 
 namespace Moosesoft.Azure.Messaging.ServiceBus.Tests;
 
@@ -41,7 +37,7 @@ public class ServiceBusReceivedMessageContextProcessorTests
     public async Task ProcessMessageContextAsync_Test()
     {
         //Arrange
-        var messageContext = Substitute.For<MessageContextBase>();
+        var messageContext = Substitute.For<MessageContext>();
 
         //Act
         await _sut.ProcessMessageContextAsync(messageContext, CancellationToken.None).ConfigureAwait(false);
@@ -52,7 +48,7 @@ public class ServiceBusReceivedMessageContextProcessorTests
 
         _failurePolicy.DidNotReceiveWithAnyArgs().CanHandle(Arg.Any<Exception>());
         await _failurePolicy.DidNotReceiveWithAnyArgs()
-            .HandleFailureAsync(Arg.Any<MessageContextBase>(), Arg.Any<CancellationToken>()).ConfigureAwait(false);
+            .HandleFailureAsync(Arg.Any<MessageContext>(), Arg.Any<CancellationToken>()).ConfigureAwait(false);
     }
 
     [TestMethod]
@@ -60,7 +56,7 @@ public class ServiceBusReceivedMessageContextProcessorTests
     {
         //Arrange
         //var message = CreateMessage();
-        var messageContext = Substitute.For<MessageContextBase>();
+        var messageContext = Substitute.For<MessageContext>();
         _messageProcessor.ProcessMessageAsync(Arg.Any<ServiceBusReceivedMessage>(), Arg.Any<CancellationToken>())
             .Throws(new InvalidOperationException());
 
@@ -78,7 +74,7 @@ public class ServiceBusReceivedMessageContextProcessorTests
         _failurePolicy.DidNotReceiveWithAnyArgs().CanHandle(Arg.Any<Exception>());
 
         await _failurePolicy.DidNotReceiveWithAnyArgs()
-            .HandleFailureAsync(Arg.Any<MessageContextBase>(), Arg.Any<CancellationToken>())
+            .HandleFailureAsync(Arg.Any<MessageContext>(), Arg.Any<CancellationToken>())
             .ConfigureAwait(false);
     }
 
@@ -86,7 +82,7 @@ public class ServiceBusReceivedMessageContextProcessorTests
     public async Task ProcessMessageContextAsync_Failed_Abandon_Test()
     {
         //Arrange
-        var messageContext = Substitute.For<MessageContextBase>();
+        var messageContext = Substitute.For<MessageContext>();
         _failurePolicy.CanHandle(Arg.Any<Exception>()).Returns(false);
         var exception = new Exception();
         _messageProcessor.ProcessMessageAsync(Arg.Any<ServiceBusReceivedMessage>(), Arg.Any<CancellationToken>())
@@ -105,7 +101,7 @@ public class ServiceBusReceivedMessageContextProcessorTests
 
         _failurePolicy.Received().CanHandle(Arg.Is(exception));
         await _failurePolicy.DidNotReceiveWithAnyArgs()
-            .HandleFailureAsync(Arg.Any<MessageContextBase>(), Arg.Any<CancellationToken>())
+            .HandleFailureAsync(Arg.Any<MessageContext>(), Arg.Any<CancellationToken>())
             .ConfigureAwait(false);
     }
 
@@ -113,10 +109,10 @@ public class ServiceBusReceivedMessageContextProcessorTests
     public async Task ProcessMessageContextAsync_FailurePolicy_Handle_Test()
     {
         //Arrange
-        var messageContext = Substitute.For<MessageContextBase>();
-            
+        var messageContext = Substitute.For<MessageContext>();
+
         _failurePolicy.CanHandle(Arg.Any<Exception>()).Returns(true);
-            
+
         var exception = new Exception();
         _messageProcessor.ProcessMessageAsync(Arg.Any<ServiceBusReceivedMessage>(), Arg.Any<CancellationToken>())
             .Throws(exception);

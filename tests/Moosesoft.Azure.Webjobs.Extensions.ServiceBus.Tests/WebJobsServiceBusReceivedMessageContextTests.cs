@@ -1,9 +1,4 @@
-﻿using Azure.Messaging.ServiceBus;
-using Microsoft.Azure.WebJobs.ServiceBus;
-using NSubstitute;
-using System.Reflection;
-
-namespace Moosesoft.Azure.Webjobs.Extensions.ServiceBus.Tests;
+﻿namespace Moosesoft.Azure.Webjobs.Extensions.ServiceBus.Tests;
 
 [ExcludeFromCodeCoverage]
 [TestClass]
@@ -18,15 +13,9 @@ public class WebJobsServiceBusReceivedMessageContextTests
     public void Init()
     {
         _messageActions = Substitute.For<ServiceBusMessageActions>();
-        _message = CreateReceivedMessage();
+        _message = ServiceBusReceivedMessageFactory.Create();
         _client = Substitute.For<ServiceBusClient>();
         _sut = new WebJobsServiceBusReceivedMessageContext(_message, _messageActions, _client);
-    }
-
-    private static ServiceBusReceivedMessage CreateReceivedMessage()
-    {
-        var ctor = typeof(ServiceBusReceivedMessage).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, new Type[] { });
-        return ctor?.Invoke(null) as ServiceBusReceivedMessage;
     }
 
     [TestMethod]

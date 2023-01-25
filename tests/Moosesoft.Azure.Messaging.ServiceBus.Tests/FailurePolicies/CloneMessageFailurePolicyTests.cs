@@ -1,7 +1,4 @@
-﻿using Azure.Messaging.ServiceBus;
-using FluentAssertions;
-using Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
-using NSubstitute;
+﻿using Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
 
 namespace Moosesoft.Azure.Messaging.ServiceBus.Tests.FailurePolicies;
 
@@ -36,7 +33,7 @@ public class CloneMessageFailurePolicyTests
     public async Task HandleFailureAsync_Test()
     {
         //Arrange
-        var messageContext = Substitute.For<MessageContextBase>();
+        var messageContext = Substitute.For<MessageContext>();
         var sender = Substitute.For<ServiceBusSender>();
         messageContext.CreateMessageSender(Arg.Any<ServiceBusEntityDescription>()).ReturnsForAnyArgs(sender);
         messageContext.DeliveryCount.Returns(1);
@@ -70,7 +67,7 @@ public class CloneMessageFailurePolicyTests
     public async Task HandleFailureAsync_MaxDeliveryCount_Test()
     {
         //Arrange
-        var messageContext = Substitute.For<MessageContextBase>();
+        var messageContext = Substitute.For<MessageContext>();
         var sender = Substitute.For<ServiceBusSender>();
         messageContext.CreateMessageSender(Arg.Any<ServiceBusEntityDescription>()).ReturnsForAnyArgs(sender);
 

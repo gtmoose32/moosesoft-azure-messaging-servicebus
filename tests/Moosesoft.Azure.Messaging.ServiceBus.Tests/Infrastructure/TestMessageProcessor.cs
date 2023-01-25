@@ -1,6 +1,4 @@
-﻿using Azure.Messaging.ServiceBus;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus.Tests.Infrastructure;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus.Tests.Infrastructure;
 
 [ExcludeFromCodeCoverage]
 public class TestMessageProcessor : IMessageProcessor

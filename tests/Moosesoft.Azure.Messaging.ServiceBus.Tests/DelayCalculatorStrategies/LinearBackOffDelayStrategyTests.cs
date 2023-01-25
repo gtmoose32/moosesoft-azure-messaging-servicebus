@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
+﻿using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
 
 namespace Moosesoft.Azure.Messaging.ServiceBus.Tests.DelayCalculatorStrategies;
 

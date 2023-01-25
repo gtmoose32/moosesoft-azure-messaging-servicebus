@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Moosesoft.Azure.Webjobs.Extensions.ServiceBus\Moosesoft.Azure.Webjobs.Extensions.ServiceBus.csproj" />
+    <ProjectReference Include="..\Moosesoft.Azure.Messaging.ServiceBus.Tests\Moosesoft.Azure.Messaging.ServiceBus.Tests.csproj" />
   </ItemGroup>
 
 </Project>

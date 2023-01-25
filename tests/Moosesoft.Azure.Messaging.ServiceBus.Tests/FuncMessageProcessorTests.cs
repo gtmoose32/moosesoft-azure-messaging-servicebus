@@ -1,6 +1,4 @@
-﻿using Azure.Messaging.ServiceBus;
-using NSubstitute;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Moosesoft.Azure.Messaging.ServiceBus.Tests;
 

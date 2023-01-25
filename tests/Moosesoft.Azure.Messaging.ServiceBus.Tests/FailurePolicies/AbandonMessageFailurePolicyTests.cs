@@ -1,6 +1,4 @@
-﻿using Moosesoft.Azure.Messaging.ServiceBus;
-using Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
-using NSubstitute;
+﻿using Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
 
 namespace Moosesoft.Azure.Messaging.ServiceBus.Tests.FailurePolicies;
 
@@ -30,7 +28,7 @@ public class AbandonMessageFailurePolicyTests
     public async Task HandleFailureAsync_Test()
     {
         //Arrange
-        var messageContext = Substitute.For<MessageContextBase>();
+        var messageContext = Substitute.For<MessageContext>();
 
         //Act
         await _sut.HandleFailureAsync(messageContext, CancellationToken.None);

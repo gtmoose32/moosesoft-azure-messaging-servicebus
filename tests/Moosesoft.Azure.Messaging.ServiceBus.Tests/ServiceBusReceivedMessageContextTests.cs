@@ -1,7 +1,4 @@
-﻿using Azure.Messaging.ServiceBus;
-using FluentAssertions;
-using NSubstitute;
-using System.Reflection;
+﻿// ReSharper disable ExpressionIsAlwaysNull
 
 namespace Moosesoft.Azure.Messaging.ServiceBus.Tests;
 
@@ -17,18 +14,11 @@ public class ServiceBusReceivedMessageContextTests
     [TestInitialize]
     public void Init()
     {
-        _message = CreateReceivedMessage();
+        _message = ServiceBusReceivedMessageFactory.Create();
         _receiver = Substitute.For<ServiceBusReceiver>();
         _client = Substitute.For<ServiceBusClient>();
-        _sut = new ServiceBusReceivedMessageContext(_message, _client, _receiver);
+        _sut = new ServiceBusReceivedMessageContext(_message, _receiver, _client);
     }
-
-    private static ServiceBusReceivedMessage CreateReceivedMessage()
-    {
-        var ctor = typeof(ServiceBusReceivedMessage).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, new Type[] { });
-        return ctor?.Invoke(null) as ServiceBusReceivedMessage;
-    }
-
 
     [TestMethod]
     public void CreateMessageSender_Test()
@@ -70,6 +60,18 @@ public class ServiceBusReceivedMessageContextTests
 
         //Assert
         result.Should().NotBeNull();
+    }
+
+    [TestMethod]
+    public void DeliveryCount_Test()
+    {
+        //Arrange
+
+        //Act
+        var result = _sut.DeliveryCount;
+
+        //Assert
+        result.Should().Be(1);
     }
 
     [TestMethod]
