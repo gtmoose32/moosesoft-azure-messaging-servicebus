@@ -1,9 +1,4 @@
-﻿using Azure.Messaging.ServiceBus;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus;
 
 internal class FuncMessageProcessor : IMessageProcessor
 {
@@ -14,7 +9,7 @@ internal class FuncMessageProcessor : IMessageProcessor
         _processMessage = processMessage ?? throw new ArgumentNullException(nameof(processMessage));
     }
 
-    public Task ProcessMessageAsync(ServiceBusReceivedMessage message, CancellationToken cancellationToken) 
-        => _processMessage(message, cancellationToken);
+    public async Task ProcessMessageAsync(ServiceBusReceivedMessage message, CancellationToken cancellationToken) 
+        => await _processMessage(message, cancellationToken).ConfigureAwait(false);
 
 }

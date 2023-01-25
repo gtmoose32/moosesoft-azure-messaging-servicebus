@@ -1,13 +1,12 @@
-﻿using Azure.Messaging.ServiceBus;
-using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
+﻿using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
 using Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 
 namespace Moosesoft.Azure.Messaging.ServiceBus.Builders;
 
+/// <summary>
+/// Used to configure and build instances of <see cref="IMessageContextProcessor"/>.
+/// </summary>
 public class MessageContextProcessorBuilder 
     : IMessageProcessorHolder, IFailurePolicyHolder, IDelayCalculatorStrategyHolder, IMessageContextProcessorBuilder
 {
@@ -17,10 +16,21 @@ public class MessageContextProcessorBuilder
     {
         _state = new BuilderState(serviceBusEntityDescription);
     }
+    
+    internal BuilderState GetBuilderState() => _state;
 
+    internal static Func<Exception, bool> DefaultCanHandle => _ => true;
+
+    /// <summary>
+    /// Configures a new instance of <see cref="MessageContextProcessorBuilder"/>.
+    /// </summary>
+    /// <param name="serviceBusEntityDescription">Service Bus entity description.</param>
+    /// <returns><see cref="IMessageProcessorHolder"/></returns>
     public static IMessageProcessorHolder Configure(ServiceBusEntityDescription serviceBusEntityDescription)
         => new MessageContextProcessorBuilder(serviceBusEntityDescription);
 
+    #region IMessageProcessorHolder Members
+    /// <inheritdoc />
     public IFailurePolicyHolder WithMessageProcessor<TProcessor>(TProcessor messageProcessor) where TProcessor : IMessageProcessor
     {
         if (messageProcessor == null) throw new ArgumentNullException(nameof(messageProcessor));
@@ -29,16 +39,21 @@ public class MessageContextProcessorBuilder
         return this;
     }
 
+    /// <inheritdoc />
     public IFailurePolicyHolder WithMessageProcessor<TProcessor>() where TProcessor : IMessageProcessor, new()
     {
         return WithMessageProcessor(new TProcessor());
     }
 
+    /// <inheritdoc />
     public IFailurePolicyHolder WithMessageProcessor(Func<ServiceBusReceivedMessage, CancellationToken, Task> processMessage)
     {
         return WithMessageProcessor(new FuncMessageProcessor(processMessage));
     }
+    #endregion
 
+    #region IFailurePolicyHolder Members
+    /// <inheritdoc />
     public IDelayCalculatorStrategyHolder WithCloneMessageFailurePolicy(Func<Exception, bool> canHandle = null, int maxMessageDeliveryCount = 10)
     {
         canHandle ??= DefaultCanHandle;
@@ -46,12 +61,14 @@ public class MessageContextProcessorBuilder
         return this;
     }
 
+    /// <inheritdoc />
     public IMessageContextProcessorBuilder WithAbandonMessageFailurePolicy()
     {
         return WithFailurePolicy(new AbandonMessageFailurePolicy());
     }
 
-    public IMessageContextProcessorBuilder WithFailurePolicy<TFailurePolicy>(TFailurePolicy failurePolicy) 
+    /// <inheritdoc />
+    public IMessageContextProcessorBuilder WithFailurePolicy<TFailurePolicy>(TFailurePolicy failurePolicy)
         where TFailurePolicy : IFailurePolicy
     {
         if (failurePolicy == null) throw new ArgumentNullException(nameof(failurePolicy));
@@ -59,8 +76,11 @@ public class MessageContextProcessorBuilder
         _state.FailurePolicyFactory = () => failurePolicy;
         return this;
     }
-    
-    public IMessageContextProcessorBuilder WithDelayCalculatorStrategy<TStrategy>(TStrategy delayCalculatorStrategy) 
+    #endregion
+
+    #region IDelayCalculatorStrategyHolder Members
+    /// <inheritdoc />
+    public IMessageContextProcessorBuilder WithDelayCalculatorStrategy<TStrategy>(TStrategy delayCalculatorStrategy)
         where TStrategy : IDelayCalculatorStrategy
     {
         if (delayCalculatorStrategy == null) throw new ArgumentNullException(nameof(delayCalculatorStrategy));
@@ -69,12 +89,14 @@ public class MessageContextProcessorBuilder
         return this;
     }
 
-    public IMessageContextProcessorBuilder WithDelayCalculatorStrategy<TStrategy>() 
+    /// <inheritdoc />
+    public IMessageContextProcessorBuilder WithDelayCalculatorStrategy<TStrategy>()
         where TStrategy : IDelayCalculatorStrategy, new()
     {
         return WithDelayCalculatorStrategy(new TStrategy());
     }
 
+    /// <inheritdoc />
     public IMessageContextProcessorBuilder WithExponentialDelayCalculatorStrategy(TimeSpan maxDelay = default)
     {
         var strategy = maxDelay == TimeSpan.Zero
@@ -84,6 +106,7 @@ public class MessageContextProcessorBuilder
         return WithDelayCalculatorStrategy(strategy);
     }
 
+    /// <inheritdoc />
     public IMessageContextProcessorBuilder WithFixedDelayCalculatorStrategy(TimeSpan delayTime = default)
     {
         var strategy = delayTime == TimeSpan.Zero
@@ -93,6 +116,7 @@ public class MessageContextProcessorBuilder
         return WithDelayCalculatorStrategy(strategy);
     }
 
+    /// <inheritdoc />
     public IMessageContextProcessorBuilder WithLinearDelayCalculatorStrategy(TimeSpan delayTime = default)
     {
         var strategy = delayTime == TimeSpan.Zero
@@ -102,22 +126,23 @@ public class MessageContextProcessorBuilder
         return WithDelayCalculatorStrategy(strategy);
     }
 
+    /// <inheritdoc />
     public IMessageContextProcessorBuilder WithZeroDelayCalculatorStrategy()
     {
         return WithDelayCalculatorStrategy(new ZeroDelayCalculatorStrategy());
     }
+    #endregion
 
+    #region IDelayCalculatorStrategyHolder Members
+    /// <inheritdoc />
     public IMessageContextProcessor Build(Func<Exception, bool> shouldCompleteOn = null, string name = "default")
     {
         return new ServiceBusReceivedMessageContextProcessor(
-            _state.EntityDescription, 
+            _state.EntityDescription,
             _state.MessageProcessor,
-            _state.FailurePolicyFactory(), 
-            shouldCompleteOn, 
+            _state.FailurePolicyFactory(),
+            shouldCompleteOn,
             name);
-    }
-
-    internal BuilderState GetBuilderState() => _state;
-
-    internal static Func<Exception, bool> DefaultCanHandle => _ => true;
+    } 
+    #endregion
 }

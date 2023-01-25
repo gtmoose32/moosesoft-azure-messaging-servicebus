@@ -1,10 +1,9 @@
 ﻿using Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
-using System;
 
 namespace Moosesoft.Azure.Messaging.ServiceBus.Builders;
 
 /// <summary>
-/// Provides a holding mechanism for instances of <see cref="IFailurePolicy"/> to help constructing message pumps.
+/// Defines a holding mechanism for instances of <see cref="IFailurePolicy"/> to help build instances of <see cref="IMessageContextProcessor"/>.
 /// </summary>
 public interface IFailurePolicyHolder
 {
@@ -20,7 +19,7 @@ public interface IFailurePolicyHolder
     /// <summary>
     /// Sets the instance of <see cref="IFailurePolicy"/> to <see cref="AbandonMessageFailurePolicy"/> for the message pump builder to use.
     /// </summary>
-    /// <returns>A message pump builder</returns>
+    /// <returns><see cref="IDelayCalculatorStrategyHolder"/></returns>
     IMessageContextProcessorBuilder WithAbandonMessageFailurePolicy();
 
     /// <summary>
@@ -28,7 +27,7 @@ public interface IFailurePolicyHolder
     /// </summary>
     /// <typeparam name="TFailurePolicy">Type of <see cref="IFailurePolicy"/></typeparam>
     /// <param name="failurePolicy"><see cref="IFailurePolicy"/> to use for the use for the message pump builder.</param>
-    /// <returns>A message pump builder</returns>
+    /// <returns><see cref="IDelayCalculatorStrategyHolder"/></returns>
     IMessageContextProcessorBuilder WithFailurePolicy<TFailurePolicy>(TFailurePolicy failurePolicy)
         where TFailurePolicy : IFailurePolicy;
 }

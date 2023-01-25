@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
 
 /// <summary>
 /// This strategy provides a constant delay for every Calculate call regardless of attempt count.
