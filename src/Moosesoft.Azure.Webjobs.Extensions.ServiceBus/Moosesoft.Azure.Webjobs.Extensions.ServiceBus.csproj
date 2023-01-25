@@ -9,12 +9,12 @@
 		<Version>1.0.0-preview1</Version>
 		<Authors>Marty Mathis</Authors>
 		<Company />
-		<Description>Provides support for advanced message processing scenarios using Microsoft Azure Service Bus, including retry with back off delay handling through failure policies.</Description>
+		<Description>Provides Azure Functions Service Bus trigger support for advanced message processing scenarios, including retry with back off delay handling through failure policies.</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/gtmoose32/moosesoft-azure-messaging-servicebus</PackageProjectUrl>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/gtmoose32/moosesoft-azure-messaging-servicebus</RepositoryUrl>
-		<PackageTags>azure function webjob servicebus service bus retry delay backoff message queue topic</PackageTags>
+		<PackageTags>azure function webjob trigger servicebus service bus retry delay backoff message queue topic</PackageTags>
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<DocumentationFile Condition="'$(Configuration)'=='Release'">bin\Release\netstandard2.0\Moosesoft.Azure.Webjobs.Extensions.ServiceBus.xml</DocumentationFile>
