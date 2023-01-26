@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
 
 /// <summary>
 /// Defines a failure policy which describes how to handle message processing failures.
@@ -22,7 +18,7 @@ public interface IFailurePolicy
     /// <param name="messageContext">The context the Service Bus Message resides in.</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns><see cref="Task"/></returns>
-    Task HandleFailureAsync(IServiceBusReceivedMessageContext messageContext, CancellationToken cancellationToken);
+    Task HandleFailureAsync(MessageContext messageContext, CancellationToken cancellationToken);
 
     /// <summary>
     /// Sets the description of the Service Bus entity for which the failure policy should be applied.

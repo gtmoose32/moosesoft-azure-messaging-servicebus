@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
 
 /// <summary>
 /// Defines a strategy for calculating delay for message processing retries.

@@ -1,8 +1,4 @@
-﻿using Azure.Messaging.ServiceBus;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus;
 
 /// <summary>
 /// Defines an object that processes a Service Bus <see cref="ServiceBusReceivedMessage"/>

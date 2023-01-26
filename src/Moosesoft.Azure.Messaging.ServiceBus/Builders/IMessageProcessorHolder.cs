@@ -1,12 +1,7 @@
-﻿using Azure.Messaging.ServiceBus;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus.Abstractions.Builder;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus.Builders;
 
 /// <summary>
-/// Interface that defines a set of methods for specifying different implementations of <see cref="IMessageProcessor"/>.
+/// Defines a set of methods for holding different implementations of <see cref="IMessageProcessor"/>.
 /// </summary>
 public interface IMessageProcessorHolder
 {

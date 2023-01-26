@@ -1,8 +1,4 @@
-﻿using Azure.Messaging.ServiceBus;
-using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
 using System.Transactions;
 
 namespace Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
@@ -24,38 +20,26 @@ public class CloneMessageFailurePolicy : FailurePolicyBase
     }
 
     /// <inheritdoc />
-    public override async Task HandleFailureAsync(IServiceBusReceivedMessageContext messageContext, CancellationToken cancellationToken)
+    public override async Task HandleFailureAsync(MessageContext messageContext, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var deliveryCount = GetDeliveryCount(messageContext.Message);
+        var deliveryCount = GetDeliveryCount(messageContext);
         if (deliveryCount >= MaxDeliveryCount)
         {
             await messageContext
-                .DeadLetterMessageAsync(messageContext.Message, $"Max delivery count of {MaxDeliveryCount} has been reached.", cancellationToken: cancellationToken)
+                .DeadLetterMessageAsync($"Max delivery count of {MaxDeliveryCount} has been reached.", cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
 
             return;
         }
 
-        var clone = new ServiceBusMessage(messageContext.Message)
-        {
-            MessageId = Guid.NewGuid().ToString(),
-            ScheduledEnqueueTime = DateTime.UtcNow + DelayCalculatorStrategy.Calculate(deliveryCount),
-            ApplicationProperties =
-            {
-                [Constants.RetryCountKey] = deliveryCount
-            }
-        };
-
         var sender = messageContext.CreateMessageSender(ServiceBusEntityDescription);
         try
         {
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-            await sender.SendMessageAsync(clone, cancellationToken).ConfigureAwait(false);
-            await messageContext
-                .CompleteMessageAsync(messageContext.Message, cancellationToken)
-                .ConfigureAwait(false);
+            await sender.SendMessageAsync(CreateMessageToSend(messageContext, deliveryCount), cancellationToken).ConfigureAwait(false);
+            await messageContext.CompleteMessageAsync(cancellationToken).ConfigureAwait(false);
 
             scope.Complete();
         }
@@ -66,5 +50,14 @@ public class CloneMessageFailurePolicy : FailurePolicyBase
     }
 
     /// <inheritdoc />
-    protected override int GetDeliveryCount(ServiceBusReceivedMessage message) => base.GetDeliveryCount(message) + message.GetRetryCount();
+    protected override int GetDeliveryCount(MessageContext messageContext) => base.GetDeliveryCount(messageContext) + messageContext.RetryCount;
+
+    private ServiceBusMessage CreateMessageToSend(MessageContext messageContext, int deliveryCount)
+    {
+        var clone = messageContext.ToServiceBusMessage();
+        clone.ScheduledEnqueueTime = DateTime.UtcNow + DelayCalculatorStrategy.Calculate(deliveryCount);
+        clone.ApplicationProperties[Constants.RetryCountPropertyName] = deliveryCount;
+
+        return clone;
+    }
 }

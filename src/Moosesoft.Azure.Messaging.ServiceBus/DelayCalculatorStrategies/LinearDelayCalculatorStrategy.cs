@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
 
 /// <summary>
 /// This strategy performs back off delay calculations using a linear model.
