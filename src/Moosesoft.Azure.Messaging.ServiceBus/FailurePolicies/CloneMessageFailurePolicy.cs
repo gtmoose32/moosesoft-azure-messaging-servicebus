@@ -50,7 +50,7 @@ public class CloneMessageFailurePolicy : FailurePolicyBase
     }
 
     /// <inheritdoc />
-    protected override int GetDeliveryCount(MessageContext message) => base.GetDeliveryCount(message) + message.RetryCount;
+    protected override int GetDeliveryCount(MessageContext messageContext) => base.GetDeliveryCount(messageContext) + messageContext.RetryCount;
 
     private ServiceBusMessage CreateMessageToSend(MessageContext messageContext, int deliveryCount)
     {
