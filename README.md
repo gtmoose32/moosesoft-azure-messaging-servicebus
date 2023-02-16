@@ -27,6 +27,31 @@ dotnet add package Moosesoft.Azure.Webjobs.Extensions.ServiceBus
 
 ## Samples
 
-Sample for [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-service-bus-trigger?tabs=csharp) can be found [here](https://github.com/gtmoose32/moosesoft-azure-messaging-servicebus/tree/master/samples/).  
+Sample for [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-service-bus-trigger?tabs=csharp) can be found [here](https://github.com/gtmoose32/moosesoft-azure-messaging-servicebus/tree/master/samples/).  Note:  Azure Functions Service Bus Trigger must have auto complete messages turned off.  Otherwise, the package will fail because the Azure Functions runtime will complete or abandon the lock behind the scenes.  That setting is configured in the [host.json](https://github.com/gtmoose32/moosesoft-azure-messaging-servicebus/blob/master/samples/AzureFunctionSample/host.json) file of the sample.
 
-Note:  Azure Functions Service Bus Trigger must have auto complete messages turned off.  Otherwise, the package will fail because the Azure Functions runtime will complete or abandon the lock behind the scenes.  That setting is configured in the [host.json](https://github.com/gtmoose32/moosesoft-azure-messaging-servicebus/blob/master/samples/AzureFunctionSample/host.json) file of the sample.
+
+```C#
+public class SampleFunction
+{
+    private readonly IMessageContextProcessor _messageContextProcessor;
+
+    public SampleFunction(IMessageContextProcessor messageContextProcessor)
+    {
+        _messageContextProcessor = messageContextProcessor ?? throw new ArgumentNullException(nameof(messageContextProcessor));
+    }
+
+    [FunctionName("SampleFunction")]
+    public async Task ProcessMessageAsync(
+        [ServiceBusTrigger("%ServiceBusQueueName%", Connection = "ServiceBusConnectionString")]
+        ServiceBusReceivedMessage message,
+        ServiceBusMessageActions messageActions,
+        ServiceBusClient client)
+
+    {
+        Console.WriteLine($"C# ServiceBus queue trigger function processed message: {message.MessageId}");
+
+        var messageContext = message.CreateMessageContext(messageActions, client);
+        await _messageContextProcessor.ProcessMessageContextAsync(messageContext).ConfigureAwait(false);
+    }
+}
+```
