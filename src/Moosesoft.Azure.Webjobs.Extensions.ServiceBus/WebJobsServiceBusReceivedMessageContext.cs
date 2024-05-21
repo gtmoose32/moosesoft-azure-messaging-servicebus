@@ -1,8 +1,7 @@
 ﻿namespace Moosesoft.Azure.Webjobs.Extensions.ServiceBus;
 
 /// <summary>
-/// <see cref="MessageContext"/> implementation compatible for use with Microsoft.Azure.WebJobs and AzureFunctions
-/// which exposes <see cref="ServiceBusMessageActions"/> for handling messages.
+/// <see cref="MessageContext"/> implementation for use with AzureFunctions In-process Model Service Bus Trigger.
 /// </summary>
 internal class WebJobsServiceBusReceivedMessageContext : MessageContext
 {
@@ -11,14 +10,14 @@ internal class WebJobsServiceBusReceivedMessageContext : MessageContext
     /// <summary>
     /// Creates a new <see cref="WebJobsServiceBusReceivedMessageContext"/>
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="messageActions"></param>
-    /// <param name="client"></param>
+    /// <param name="message">Message received from Azure Service Bus.</param>
+    /// <param name="messageActions">Message actions that can be used to perform operations against the received message.</param>
+    /// <param name="client">Underlying Azure Service Bus client used to process received messages.</param>
     /// <exception cref="ArgumentNullException"></exception>
     public WebJobsServiceBusReceivedMessageContext(ServiceBusReceivedMessage message, ServiceBusMessageActions messageActions, ServiceBusClient client)
         : base(message, client)
     {
-        _messageActions = messageActions ?? throw new ArgumentNullException(nameof(messageActions));
+        _messageActions = messageActions;
     }
 
     /// <inheritdoc />

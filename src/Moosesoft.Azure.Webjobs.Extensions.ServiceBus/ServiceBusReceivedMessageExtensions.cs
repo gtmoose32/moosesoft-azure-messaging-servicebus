@@ -8,9 +8,9 @@ public static class ServiceBusReceivedMessageExtensions
     /// <summary>
     /// Creates a new instance of <see cref="MessageContext"/> from <see cref="ServiceBusReceivedMessage"/>.
     /// </summary>
-    /// <param name="message">The message from which the <see cref="MessageContext"/> is created.</param>
-    /// <param name="messageActions"><see cref="ServiceBusMessageActions"/> used to receive the <see cref="ServiceBusReceivedMessage"/>.</param>
-    /// <param name="client"><see cref="ServiceBusClient"/> used to create <see cref="ServiceBusSender"/> instances.</param>
+    /// <param name="message">Message received from Azure Service Bus.</param>
+    /// <param name="messageActions">Message actions that can be used to perform operations against the received message.</param>
+    /// <param name="client">Underlying Azure Service Bus client used to process received messages.</param>
     /// <returns><see cref="MessageContext"/></returns>
     public static MessageContext CreateMessageContext(
         this ServiceBusReceivedMessage message,

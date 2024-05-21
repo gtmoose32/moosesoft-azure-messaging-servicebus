@@ -1,6 +1,4 @@
-﻿using Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus.Builders;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus.Builders;
 
 /// <summary>
 /// Defines a holding mechanism for instances of <see cref="IFailurePolicy"/> to help build instances of <see cref="IMessageContextProcessor"/>.

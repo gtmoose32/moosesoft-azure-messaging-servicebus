@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Moosesoft.Azure.Messaging.ServiceBus</RootNamespace>
     <LangVersion>latest</LangVersion>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Authors>Marty Mathis</Authors>
     <Company />
     <Description>Provides support for advanced message processing scenarios using Microsoft Azure Service Bus, including retry with back off delay handling through failure policies.</Description>
@@ -18,7 +18,7 @@
     <GenerateDocumentationFile Condition="'$(Configuration)'=='Release'">true</GenerateDocumentationFile>
     <DocumentationFile Condition="'$(Configuration)'=='Release'">bin\Release\netstandard2.0\Moosesoft.Azure.Messaging.ServiceBus.xml</DocumentationFile>
     <PackageReleaseNotes>
-      * Initial release
+      * Updated Azure Service Bus sdk package
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -28,12 +28,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="readme.md" Pack="true" PackagePath="\"/>
+    <None Include="readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.12.0" />
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.17.5" />
   </ItemGroup>
 
 </Project>

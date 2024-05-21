@@ -1,7 +1,4 @@
-﻿using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
-using System.Transactions;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
 
 /// <summary>
 /// This failure policy will create a clone of the Service Bus Message attempting to be processed.
