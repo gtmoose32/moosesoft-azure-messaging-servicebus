@@ -1,14 +1,15 @@
-﻿using AzureFunctionSample;
+﻿using InProcessAzureFunctionSample;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moosesoft.Azure.Messaging.ServiceBus;
 using Moosesoft.Azure.Messaging.ServiceBus.Builders;
+using SampleCore;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: FunctionsStartup(typeof(Startup))]
-namespace AzureFunctionSample;
+namespace InProcessAzureFunctionSample;
 
 [ExcludeFromCodeCoverage]
 public class Startup : FunctionsStartup

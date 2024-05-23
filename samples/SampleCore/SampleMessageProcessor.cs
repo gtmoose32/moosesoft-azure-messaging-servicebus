@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AzureFunctionSample;
+namespace SampleCore;
 
 /// <summary>
 /// Implementations of <see cref="IMessageProcessor"/> should process messages received from Service Bus.
@@ -14,12 +14,7 @@ namespace AzureFunctionSample;
 [ExcludeFromCodeCoverage]
 public class SampleMessageProcessor : IMessageProcessor
 {
-    private readonly Random _random;
-
-    public SampleMessageProcessor()
-    {
-        _random = new Random();
-    }
+    private readonly Random _random = new();
 
     public Task ProcessMessageAsync(ServiceBusReceivedMessage message, CancellationToken cancellationToken)
     {

@@ -7,14 +7,14 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
-namespace AzureFunctionSample;
+namespace InProcessAzureFunctionSample;
 
 [ExcludeFromCodeCoverage]
-public class SampleFunction
+public class InProcessFunction
 {
     private readonly IMessageContextProcessor _messageContextProcessor;
 
-    public SampleFunction(IMessageContextProcessor messageContextProcessor)
+    public InProcessFunction(IMessageContextProcessor messageContextProcessor)
     {
         _messageContextProcessor = messageContextProcessor ?? throw new ArgumentNullException(nameof(messageContextProcessor));
     }
