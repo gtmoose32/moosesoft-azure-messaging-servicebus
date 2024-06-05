@@ -1,6 +1,4 @@
-﻿using Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus;
 
 /// <inheritdoc />
 internal class ServiceBusReceivedMessageContextProcessor : IMessageContextProcessor

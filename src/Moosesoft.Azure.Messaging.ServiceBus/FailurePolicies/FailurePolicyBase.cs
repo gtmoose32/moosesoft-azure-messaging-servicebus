@@ -1,6 +1,4 @@
-﻿using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
 
 /// <inheritdoc cref="IFailurePolicy"/>>
 public abstract class FailurePolicyBase : IFailurePolicy

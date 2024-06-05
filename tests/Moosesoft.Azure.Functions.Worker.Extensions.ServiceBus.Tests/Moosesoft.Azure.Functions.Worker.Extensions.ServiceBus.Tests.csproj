@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,7 +7,7 @@
     <LangVersion>12.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
-    <RootNamespace>Moosesoft.Azure.Webjobs.Extensions.ServiceBus.Tests</RootNamespace>
+    <RootNamespace>Moosesoft.Azure.Functions.Worker.Extensions.ServiceBus.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,8 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Moosesoft.Azure.Webjobs.Extensions.ServiceBus\Moosesoft.Azure.Webjobs.Extensions.ServiceBus.csproj" />
+    <ProjectReference Include="..\..\src\Moosesoft.Azure.Functions.Worker.Extensions.ServiceBus\Moosesoft.Azure.Functions.Worker.Extensions.ServiceBus.csproj" />
     <ProjectReference Include="..\Moosesoft.Azure.Messaging.ServiceBus.Tests\Moosesoft.Azure.Messaging.ServiceBus.Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
 
 </Project>

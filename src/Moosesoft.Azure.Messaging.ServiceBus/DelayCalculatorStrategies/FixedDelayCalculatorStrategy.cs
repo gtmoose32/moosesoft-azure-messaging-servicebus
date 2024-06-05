@@ -22,7 +22,7 @@ public class FixedDelayCalculatorStrategy : IDelayCalculatorStrategy
     public TimeSpan Calculate(int attempts) => _delay;
 
     /// <summary>
-    /// Creates an instance of this delay calculator strategy with default settings.
+    /// Creates an instance of this delay calculator strategy with a default delay of 5 minutes.
     /// </summary>
     public static IDelayCalculatorStrategy Default => new FixedDelayCalculatorStrategy(DefaultDelayTimeSpan);
 }

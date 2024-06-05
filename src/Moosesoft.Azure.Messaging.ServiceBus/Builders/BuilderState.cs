@@ -1,7 +1,4 @@
-﻿using Moosesoft.Azure.Messaging.ServiceBus.DelayCalculatorStrategies;
-using Moosesoft.Azure.Messaging.ServiceBus.FailurePolicies;
-
-namespace Moosesoft.Azure.Messaging.ServiceBus.Builders;
+﻿namespace Moosesoft.Azure.Messaging.ServiceBus.Builders;
 
 [ExcludeFromCodeCoverage]
 internal class BuilderState
