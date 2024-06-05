@@ -19,7 +19,7 @@ public class InProcessFunction
         _messageContextProcessor = messageContextProcessor ?? throw new ArgumentNullException(nameof(messageContextProcessor));
     }
 
-    [FunctionName("SampleFunction")]
+    [FunctionName(nameof(InProcessFunction))]
     public async Task ProcessMessageAsync(
         [ServiceBusTrigger("%ServiceBusQueueName%", Connection = "ServiceBusConnectionString")]
         ServiceBusReceivedMessage message,

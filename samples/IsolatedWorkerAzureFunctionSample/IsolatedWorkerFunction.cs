@@ -10,22 +10,23 @@ namespace IsolatedWorkerAzureFunctionSample;
 public class IsolatedWorkerFunction
 {
     private readonly IMessageContextProcessor _messageContextProcessor;
+    private readonly ServiceBusClient _serviceBusClient;
 
-    public IsolatedWorkerFunction(IMessageContextProcessor messageContextProcessor)
+    public IsolatedWorkerFunction(IMessageContextProcessor messageContextProcessor, ServiceBusClient serviceBusClient)
     {
         _messageContextProcessor = messageContextProcessor;
+        _serviceBusClient = serviceBusClient;
     }
 
     [Function(nameof(IsolatedWorkerFunction))]
     public async Task Run(
         [ServiceBusTrigger("%ServiceBusQueueName%", Connection = "ServiceBusConnectionString")]
         ServiceBusReceivedMessage message,
-        ServiceBusMessageActions messageActions,
-        ServiceBusClient client)
+        ServiceBusMessageActions messageActions)
     {
         Console.WriteLine($"C# ServiceBus queue trigger function processed message: {message.MessageId}");
 
-        var messageContext = message.CreateMessageContext(messageActions, client);
+        var messageContext = message.CreateMessageContext(messageActions, _serviceBusClient);
         await _messageContextProcessor.ProcessMessageContextAsync(messageContext).ConfigureAwait(false);
     }
 }
